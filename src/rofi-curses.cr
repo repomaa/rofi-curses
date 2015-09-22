@@ -16,7 +16,7 @@ module Rofi::Curses
   NCurses.raw
   NCurses.no_echo
 
-  menu = NCursesMenu.new(items)
+  menu = Menu.new(items)
 
   choice, modifier = menu.show
   NCurses.end_win

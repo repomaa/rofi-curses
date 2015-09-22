@@ -1,7 +1,7 @@
 require "../ncurses/window"
 
 module Rofi::Curses
-  class NCursesMenu
+  class Menu
     getter search, list
 
     def initialize(@items : Array, height = nil, width = nil, y = 0, x = 0)
