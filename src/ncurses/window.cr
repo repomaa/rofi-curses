@@ -84,5 +84,33 @@ module NCurses
     def refresh
       LibNCurses.wrefresh(self)
     end
+
+    def on_input
+      no_timeout
+      char = get_char
+      case(char)
+      when 27
+        on_special_input { |key, mod| yield(key, mod) }
+      when 10
+        yield(:return, nil)
+      when 32..127
+        yield(char.chr, nil)
+      end
+    end
+
+    def on_special_input
+      no_delay
+      char = get_char
+      if char == -1
+        yield(:escape, nil)
+      elsif char == 91
+        case(get_char)
+        when 65 then yield(:up, nil)
+        when 66 then yield(:down, nil)
+        end
+      else
+        yield(char.chr, :alt)
+      end
+    end
   end
 end

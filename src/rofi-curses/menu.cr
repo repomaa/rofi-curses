@@ -27,32 +27,6 @@ module Rofi::Curses
       end
     end
 
-    def on_input
-      loop do
-        search.no_timeout
-        char = search.get_char
-        case(char)
-        when 27
-          search.no_delay
-          char = search.get_char
-          if char == -1
-            yield(:escape)
-          elsif char == 91
-            case(search.get_char)
-            when 65 then yield(:up)
-            when 66 then yield(:down)
-            end
-          else
-            yield(char.chr, :alt)
-          end
-        when 10
-          yield(:return)
-        when 32..127
-          yield(char.chr)
-        end
-      end
-    end
-
     def filtered_items
       @filter_chain.last
     end
@@ -82,16 +56,18 @@ module Rofi::Curses
     def show
       refresh_list
 
-      on_input do |char, modifier|
-        if modifier == :alt
-          return { filtered_items[@cursor]?.try { |item| item[0] }, char }
-        end
-        case(char)
-        when :escape then return { nil, nil }
-        when :return then return { filtered_items[@cursor]?.try { |item| item[0] }, nil }
-        when :up then move_cursor(-1)
-        when :down then move_cursor(1)
-        else type_and_filter(char as Char)
+      loop do
+        @search.on_input do |char, modifier|
+          if modifier == :alt
+            return { filtered_items[@cursor]?.try { |item| item[0] }, char }
+          end
+          case(char)
+          when :escape then return { nil, nil }
+          when :return then return { filtered_items[@cursor]?.try { |item| item[0] }, nil }
+          when :up then move_cursor(-1)
+          when :down then move_cursor(1)
+          else type_and_filter(char as Char)
+          end
         end
       end
     end
