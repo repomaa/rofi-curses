@@ -5,15 +5,22 @@ module Rofi::Curses
   items = [] of String
 
   prompt = ""
+  input = STDIN
+
   OptionParser.parse! do |parser|
     parser.on("-pPROMPT", "--prompt PROMPT", "The prompt to show") do |value|
       prompt = "#{value.strip} "
     end
+    parser.on("-fFILE", "--file FILE", "Show lines from file") do |value|
+      input = File.open(value)
+    end
   end
 
-  while item = STDIN.gets
+  while item = input.gets
     items << item.chomp
   end
+
+  input.close
 
   stdout = File.open("/dev/null")
   stdout.reopen(STDOUT)
