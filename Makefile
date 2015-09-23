@@ -1,8 +1,8 @@
 release:
-	crystal build --release -o bin/rofi-curses src/rofi-curses.cr
+	crystal build --release -o bin/rofi-curses src/rofi-curses-cli.cr
 
 debug:
-	crystal build -d -o bin/rofi-curses src/rofi-curses.cr
+	crystal build -d -o bin/rofi-curses src/rofi-curses-cli.cr
 
 test:
-	crystal spec spec/rofi-curses_spec.cr
+	crystal spec
