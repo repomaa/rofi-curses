@@ -1,26 +1,27 @@
-# rofi-curses
+# rofi-curses ![travis ci](https://travis-ci.org/jreinert/rofi-curses.svg?branch=master)
 
-TODO: Write a description here
+This aims to be a clone of rofi providing compatibility for (almost) all
+command line switches and general functionality. It runs completely in the
+console so you can use it on a headless server.
+
+rofi-curses is written in [Crystal](http://crystal-lang.org). It aims to
+provide extremely fast filtering and already does a pretty good job at that.
 
 ## Installation
 
-
-TODO: Write installation instructions here
-
+1. Get [Crystal](http://crystal-lang.org)
+2. `git clone https://github.com/jreinert/rofi-curses.git`
+3. `cd rofi-curses`
+4. `make && make install`
 
 ## Usage
 
-
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
+`echo -n "foo\nbar\nbaz" | rofi-curses -p Choose:`
+`rofi-curses -p 'Lines in file:' -f path/to/a/file`
 
 ## Contributing
 
-1. Fork it ( https://github.com/[your-github-name]/rofi-curses/fork )
+1. Fork it ( https://github.com/jreinert/rofi-curses/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
@@ -28,4 +29,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [your-github-name](https://github.com/[your-github-name]) Joakim Reinert - creator, maintainer
+- [jreinert](https://github.com/jreinert) Joakim Reinert - creator, maintainer
