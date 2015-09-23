@@ -6,3 +6,6 @@ debug:
 
 test:
 	crystal spec
+
+install: release
+	install bin/rofi-curses -Dm755 bin/rofi-curses /usr/bin/crystal
