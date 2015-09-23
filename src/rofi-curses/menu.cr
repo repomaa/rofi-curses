@@ -1,3 +1,4 @@
+require "../array"
 require "../ncurses/window"
 
 module Rofi::Curses
@@ -17,12 +18,10 @@ module Rofi::Curses
       @filter_chain.push(filtered_items.clone)
       tokens = @query.join.split(/\s+/).map { |token| /#{Regex.escape(token)}/i }
 
-      index = 0
-      filtered_items.select! do |item_with_index|
+      filtered_items.select_with_index! do |item_with_index, index|
         item, real_index = item_with_index
         match = tokens.all? { |token| item =~ token }
         @cursor = 0 if !match && @cursor == index
-        index += 1
         match
       end
     end
@@ -77,7 +76,6 @@ module Rofi::Curses
       height, _ = @list.max_dimensions
       start_index = [0, (@cursor + 1) - height].max
       end_index = [start_index + height, filtered_items.size].min
-      `notify-send #{filtered_items.size}`
       filtered_items[start_index...end_index].each_with_index do |item_with_index, index|
         item, real_index = item_with_index
         attributes = (start_index + index) == @cursor ? :standout : :normal
