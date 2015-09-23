@@ -5,7 +5,7 @@ module Rofi::Curses
   class Menu
     getter search, list
 
-    def initialize(@items : Array, height = nil, width = nil, y = 0, x = 0)
+    def initialize(@items : Array, height = nil, width = nil, y = 0, x = 0, @prompt = nil)
       max_height, max_width = NCurses.stdscr.max_dimensions
       @search = NCurses::Window.new(1, width, y, x)
       @list = NCurses::Window.new((height || max_height) - 1, width, y + 1, x)
@@ -35,7 +35,7 @@ module Rofi::Curses
         return if @query.empty?
         @query.pop
         @search.clear
-        @search.print(@query.join)
+        @search.print("#{@prompt}#{@query.join}")
         @filter_chain.pop
       else
         @query << char
@@ -53,6 +53,8 @@ module Rofi::Curses
     end
 
     def show
+      @search.print(@prompt.to_s)
+      @search.refresh
       refresh_list
 
       loop do
