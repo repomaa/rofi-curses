@@ -1,5 +1,5 @@
 require "../array"
-require "../ncurses/window"
+require "ncurses"
 
 module Rofi::Curses
   class Menu

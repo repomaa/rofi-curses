@@ -1,7 +1,8 @@
 name: rofi-curses
 version: 0.1.0
-
 authors:
   - Joakim Reinert <mail@jreinert.com>
-
 license: MIT
+dependencies:
+  ncurses:
+    github: jreinert/ncurses
