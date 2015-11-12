@@ -5,4 +5,4 @@ authors:
 license: MIT
 dependencies:
   ncurses:
-    github: jreinert/ncurses
+    github: jreinert/ncurses-crystal
