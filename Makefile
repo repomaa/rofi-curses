@@ -1,10 +1,13 @@
-release:
+release: deps
 	crystal build --release -o bin/rofi-curses src/rofi-curses-cli.cr
 
-debug:
+deps:
+	shards install
+
+debug: deps
 	crystal build -d -o bin/rofi-curses src/rofi-curses-cli.cr
 
-test:
+test: deps
 	crystal spec
 
 install: release
