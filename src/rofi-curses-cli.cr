@@ -29,11 +29,7 @@ module Rofi::Curses
     end
 
     input.close
-
-    stdout = File.open("/dev/null")
-    stdout.reopen(STDOUT)
     STDIN.reopen(File.open("/dev/tty"))
-    STDOUT.reopen(STDERR)
 
     NCurses.init
     NCurses.raw
@@ -44,7 +40,6 @@ module Rofi::Curses
     choice, modifier = menu.show
     NCurses.end_win
 
-    STDOUT.reopen(stdout)
     puts "#{choice}"
   end
 end
