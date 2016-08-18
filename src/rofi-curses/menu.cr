@@ -5,13 +5,16 @@ module Rofi::Curses
   class Menu
     getter search, list
 
-    def initialize(@items : Array, height = nil, width = nil, y = 0, x = 0, @prompt = nil)
+	# Type inference does not work for this.. Maybe too complicated ?
+    @filter_chain : Array(Array(Tuple(String, Int32)))
+
+    def initialize(@items : Array(String), height = nil, width = nil, y = 0, x = 0, @prompt = "")
       max_height, max_width = NCurses.stdscr.max_dimensions
       @search = NCurses::Window.new(1, width, y, x)
       @list = NCurses::Window.new((height || max_height) - 1, width, y + 1, x)
       @query = [] of Char
       @cursor = 0
-      @filter_chain = [@items.map_with_index { |item, index| { item, index } }]
+      @filter_chain = [@items.map_with_index { |item, index| {item, index} }]
     end
 
     def filter_items
@@ -60,14 +63,14 @@ module Rofi::Curses
       loop do
         @search.on_input do |char, modifier|
           if modifier == :alt
-            return { filtered_items[@cursor]?.try { |item| item[0] }, char }
+            return {filtered_items[@cursor]?.try { |item| item[0] }, char}
           end
-          case(char)
-          when :escape then return { nil, nil }
-          when :return then return { filtered_items[@cursor]?.try { |item| item[0] }, nil }
-          when :up then move_cursor(-1)
-          when :down then move_cursor(1)
-          else type_and_filter(char as Char)
+          case (char)
+          when :escape then return {nil, nil}
+          when :return then return {filtered_items[@cursor]?.try { |item| item[0] }, nil}
+          when :up     then move_cursor(-1)
+          when :down   then move_cursor(1)
+          else              type_and_filter(char.as(Char))
           end
         end
       end
@@ -82,7 +85,7 @@ module Rofi::Curses
         item, real_index = item_with_index
         attributes = (start_index + index) == @cursor ? :standout : :normal
         @list.with_attr(attributes) do
-          @list.print(item.to_s, { index, 0 })
+          @list.print(item.to_s, {index, 0})
         end
       end
       @list.refresh
